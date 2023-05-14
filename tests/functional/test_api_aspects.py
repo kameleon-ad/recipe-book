@@ -9,7 +9,7 @@ def test_api_aspects():
 
 
 def test_api_new_aspect():
-    response = test_client.post('/api/aspects', data={"aspect": "test-aspect"}, follow_redirects=True)
+    response = test_client.post('/api/aspects', data={'aspect': 'test-new-aspect-api'}, follow_redirects=True)
     assert response.status_code == 200
     assert response.is_json
     assert 'aspect' in response.json
