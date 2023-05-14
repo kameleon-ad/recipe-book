@@ -1,8 +1,10 @@
 from flask import Blueprint, jsonify
 from .aspects import api as aspects_api
+from .sentiments import api as sentiments_api
 
 api = Blueprint('api', __name__)
 api.register_blueprint(aspects_api, url_prefix='/aspects')
+api.register_blueprint(sentiments_api, url_prefix='/sentiments')
 
 
 @api.route('/test', methods=['GET'])
