@@ -2,6 +2,8 @@
 
 This is a Flask application built with Docker. It includes a PostgreSQL database and Redis for caching.
 
+[Api Documentation](/docs/api.md)
+
 ## Installation
 
 To run this application, make sure you have Docker installed on your system. Follow the official Docker documentation to install Docker: [https://docs.docker.com/get-docker/](https://docs.docker.com/get-docker/)
