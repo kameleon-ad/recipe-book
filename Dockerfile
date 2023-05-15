@@ -22,6 +22,7 @@ RUN pip install -r requirements.txt
 COPY . /opinion-ai
 
 # Expose the port that the Flask application will run on
+ENV LISTEN_PORT=5000
 EXPOSE 5000
 
 # Set environment variables for Flask, PostgreSQL and Redis
@@ -42,4 +43,4 @@ ENV UPLOAD_DIR='/var/deep-opinion/upload'
 
 # Start the Flask application
 CMD ["flask", "seed", "run"]
-CMD ["flask", "run"]
+CMD ["flask", "run", "-h", "0.0.0.0", "-p", "5000"]
