@@ -24,11 +24,14 @@ def store_db(df: pd.DataFrame, *_args):
     db_instances = []
     app = instances['app']
 
+    def feature_extractor(item):
+        return {"text": item.text}
+
     for _, row in df.iterrows():
-        db_instances.append(Hltddb(text=row.text))
+        db_instances.append(feature_extractor(row))
         cnt += 1
 
     with app.app_context():
-        db.session.bulk_save_objects(db_instances)
+        db.session.bulk_insert_mappings(Hltddb, db_instances)
         db.session.commit()
     return cnt
