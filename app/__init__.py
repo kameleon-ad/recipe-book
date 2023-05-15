@@ -1,7 +1,7 @@
 from flask import Flask
 
 from config import BaseConfig
-from app.extensions import db, cache
+from app.extensions import db, cache, instances
 from app.api import api
 
 
@@ -21,5 +21,7 @@ def create_app(config_class=None):
 
     # Register blueprints
     app.register_blueprint(api, url_prefix='/api')
+
+    instances['app'] = app
 
     return app
