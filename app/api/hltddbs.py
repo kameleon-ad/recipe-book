@@ -64,7 +64,7 @@ async def download_file():
     filename = 'data.csv'
     response = Response(csv_file, mimetype='text/csv')
     response.headers.set('Content-Disposition', 'attachment', filename=filename)
-    return jsonify(whole_data)
+    return response
 
 
 @api.route('/file', methods=['POST'])
