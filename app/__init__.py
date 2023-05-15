@@ -1,7 +1,7 @@
 from flask import Flask
 
 from config import BaseConfig
-from app.extensions import db, cache, instances
+from app.extensions import db, cache, seeder, instances
 from app.api import api
 
 
@@ -15,6 +15,7 @@ def create_app(config_class=None):
     # Initialize Flask extensions
     db.init_app(app)
     cache.init_app(app)
+    seeder.init_app(app, db)
 
     with app.app_context():
         db.create_all()
