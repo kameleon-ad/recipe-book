@@ -74,8 +74,10 @@ async def upload_file():
 
     csv_file = request.files['csv_file']
     event_loop = asyncio.get_event_loop()
-    csv_data = await event_loop.run_in_executor(None, from_csv, csv_file)
-
-    cnt = await event_loop.run_in_executor(None, store_db, csv_data)
+    # csv_data = await event_loop.run_in_executor(None, from_csv, csv_file)
+    #
+    # cnt = await event_loop.run_in_executor(None, store_db, csv_data)
+    # cnt = await event_loop.run_in_executor(None, distributed_store_db, csv_file)
+    cnt = await distributed_store_db(csv_file)
 
     return {'total': cnt}
