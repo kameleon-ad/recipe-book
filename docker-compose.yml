@@ -1,0 +1,36 @@
+version: '3'
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    expose:
+      - "5000"
+    ports:
+      - "5000:5000"
+    depends_on:
+      - postgres
+      - redis
+
+  postgres:
+    image: postgres
+    expose:
+      - "5432"
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=opinion_ai
+    volumes:
+      - opinion_ai_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis
+    expose:
+      - "6379"
+    ports:
+      - "6379:6379"
+
+volumes:
+  opinion_ai_data:
