@@ -1,3 +1,5 @@
+import asyncio
+from concurrent.futures import ProcessPoolExecutor
 import pandas as pd
 import json
 
@@ -19,7 +21,19 @@ def from_csv(csv_data):
     return pd.read_csv(csv_data)
 
 
-def store_db(df: pd.DataFrame, *_args):
+async def distributed_store_db(csv_file):
+    executor = ProcessPoolExecutor()
+    store_db_tasks = []
+    cnt = 0
+    for chunk in pd.read_csv(csv_file, chunksize=300000):
+        event_loop = asyncio.get_event_loop()
+        task = event_loop.run_in_executor(executor, store_db, chunk)
+        store_db_tasks.append(task)
+    completed, _ = await asyncio.wait(store_db_tasks)
+    return cnt
+
+
+def store_db(df: pd.DataFrame):
     cnt = 0
     db_instances = []
     app = instances['app']

@@ -1,4 +1,5 @@
 from flask import Flask
+from sqlalchemy.orm import scoped_session, sessionmaker
 
 from config import BaseConfig
 from app.extensions import db, cache, seeder, instances
@@ -18,6 +19,9 @@ def create_app(config_class=None):
     seeder.init_app(app, db)
 
     with app.app_context():
+        session_factory = sessionmaker(bind=db.engine)
+        session_maker = scoped_session(session_factory)
+        instances['session_maker'] = session_maker
         db.create_all()
 
     # Register blueprints
