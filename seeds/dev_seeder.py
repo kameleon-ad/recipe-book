@@ -5,7 +5,7 @@ import random
 from flask_seeder import Seeder
 
 from app.extensions import db
-from app.models import Aspect, Sentiment, Tag, recipeTag, Recipe
+from app.models import Aspect, Sentiment, Tag, RecipeTag, Recipe
 
 
 class OpinionAiSeeder(Seeder):
@@ -15,7 +15,7 @@ class OpinionAiSeeder(Seeder):
         with open(os.getenv('DB_SEED_CFG'), "r") as fp:
             self.config = json.load(fp)
 
-        for model in reversed([Aspect, Sentiment, Tag, Recipe, recipeTag]):
+        for model in reversed([Aspect, Sentiment, Tag, Recipe, RecipeTag]):
             model.query.delete()
 
         aspects = [Aspect(aspect=aspect) for aspect in self.config['aspects']]

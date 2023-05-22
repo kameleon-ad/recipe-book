@@ -2,7 +2,7 @@ import uuid
 from sqlalchemy.orm import backref
 from sqlalchemy.dialects.postgresql import UUID
 from app.extensions import db
-from app.models import recipeTag, Tag
+from app.models import RecipeTag, Tag
 
 
 class Recipe(db.Model):
@@ -12,7 +12,7 @@ class Recipe(db.Model):
     ingredients = db.Column(db.Text())
     instructions = db.Column(db.Text())
     cook_time = db.Column(db.Integer, default=0)
-    tags = db.relationship('Tag', secondary=recipeTag.__table__,
+    tags = db.relationship('Tag', secondary=RecipeTag.__table__,
                            backref=backref('Recipe'),
                            cascade='save-update, merge, delete')
 
@@ -29,8 +29,22 @@ class Recipe(db.Model):
         old_tag = self.get_tag(tag_pid)
 
         if old_tag is not None:
-            return recipeTag.update(self.pid, old_tag.pid, new_tag.pid)
-        return recipeTag.insert(self.pid, new_tag.pid)
+            return RecipeTag.update(self.pid, old_tag.pid, new_tag.pid)
+        return RecipeTag.insert(self.pid, new_tag.pid)
+
+    def set(self, data):
+        if 'title' in data:
+            self.title = data['title']
+        if 'ingredients' in data:
+            self.ingredients = data['ingredients']
+        if 'instructions' in data:
+            self.instructions = data['instructions']
+        if 'cook_time' in data:
+            self.cook_time = data['cook_time']
+        if 'tags' in data:
+            for tag in self.tags:
+                self.set_tag(tag)
+        db.session.commit()
 
     @staticmethod
     def get_all_recipes():
@@ -41,8 +55,8 @@ class Recipe(db.Model):
         return Recipe.query.filter(Recipe.pid == recipe_pid).first()
 
     @staticmethod
-    def add_new_recipe(text):
-        new_recipe = Recipe(text=text)
+    def add_new_recipe(data):
+        new_recipe = Recipe(**data)
         db.session.add(new_recipe)
         db.session.commit()
         return new_recipe

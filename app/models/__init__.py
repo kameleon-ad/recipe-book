@@ -1,3 +1,3 @@
 from .tag import Tag
-from .recipe_tag import recipeTag
+from .recipe_tag import RecipeTag
 from .recipe import Recipe

@@ -1,5 +1,6 @@
-from flask import Blueprint, request, jsonify, Response
+from flask import Blueprint, request, jsonify
 from app.models import Recipe
+from app.utils.req_parser import new_recipe_parser
 
 api = Blueprint('recipe', __name__)
 
@@ -16,11 +17,12 @@ def get_all_recipes():
 
 @api.route('/', methods=['POST'])
 def add_new_recipe():
-    text = request.form['text']
-    return jsonify(Recipe.add_new_recipe(text).raw)
+    # title, ingredients, instructions for preparation, cook time and relevant tags
+    data = new_recipe_parser(request.form)
+    return jsonify(Recipe.add_new_recipe(**data).raw)
 
 
-@api.route('/recipe/<string:recipe_pid>', methods=['GET'])
+@api.route('/<string:recipe_pid>', methods=['GET'])
 def get_recipe(recipe_pid: str):
     recipe = Recipe.get_recipe(recipe_pid)
     if recipe is None:
@@ -28,22 +30,10 @@ def get_recipe(recipe_pid: str):
     return jsonify(recipe.raw)
 
 
-@api.route('/recipe/<string:recipe_pid>/<string:aspect_pid>', methods=['GET'])
-def get_sentiment(recipe_pid: str, aspect_pid: str):
+@api.route('/<string:recipe_pid>', methods=['POST', 'PUT'])
+def set_sentiment(recipe_pid: str):
+    data = new_recipe_parser(request.form)
     recipe = Recipe.get_recipe(recipe_pid)
     if recipe is None:
         return jsonify({'recipe': 'Recipe does not exist'}), 404
-    sentiment = recipe.get_sentiment(aspect_pid)
-    if sentiment is None:
-        return jsonify({'sentiment': 'Sentiment is not defined'}), 404
-    return jsonify(sentiment.raw)
-
-
-@api.route('/recipe/<string:recipe_pid>/<string:aspect_pid>', methods=['POST', 'PUT'])
-def set_sentiment(recipe_pid: str, aspect_pid: str):
-    recipe = Recipe.get_recipe(recipe_pid)
-    if recipe is None:
-        return jsonify({'recipe': 'Recipe does not exist'}), 404
-    sentiment_pid = request.form['sentiment']
-    sentiment = recipe.set_sentiment(aspect_pid, sentiment_pid).raw
-    return jsonify(sentiment)
+    return jsonify(recipe.set(data).raw)
