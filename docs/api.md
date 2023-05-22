@@ -128,9 +128,9 @@ The base URL for all API endpoints is: `http://localhost:5000`
       }
     }
   ]
-### 4. Hltddbs Endpoints
-#### Create a new Hltddbs (Human Level Text & Document Database)
-- Endpoint: `/api/hltddbs`
+### 4. recipes Endpoints
+#### Create a new recipes (Human Level Text & Document Database)
+- Endpoint: `/api/recipes`
 - Method: `POST`
 - Description: Get a list of all aspects
 - Request Body:
@@ -146,10 +146,10 @@ The base URL for all API endpoints is: `http://localhost:5000`
     "text": "The Room was terrible but the staff was very friendly."
   }
 #### Labeling
-- Endpoint: `/hltddb/<string:hltddb_pid>/<string:aspect_pid>`
+- Endpoint: `/recipe/<string:recipe_pid>/<string:aspect_pid>`
 - Method: `POST`
-- Description: Set sentiment of hltddbs-aspect
-- Request URL: `http://localhost:5000/api/hltddbs/hltddb/8af02b90-9e4c-4098-b19b-411b06f34a08/e4124ba4-9a3e-4ef9-ae49-2eb15b953bc3`
+- Description: Set sentiment of recipes-aspect
+- Request URL: `http://localhost:5000/api/recipes/recipe/8af02b90-9e4c-4098-b19b-411b06f34a08/e4124ba4-9a3e-4ef9-ae49-2eb15b953bc3`
 - Request Body:
   ```json
   {
@@ -158,12 +158,12 @@ The base URL for all API endpoints is: `http://localhost:5000`
 - Response:
   ```json
   {
-    "hltddb_pid": "8af02b90-9e4c-4098-b19b-411b06f34a08"
+    "recipe_pid": "8af02b90-9e4c-4098-b19b-411b06f34a08"
   }
-#### Get All Hltddbs
-- Endpoint: `/api/hltddbs`
+#### Get All recipes
+- Endpoint: `/api/recipes`
 - Method: `GET`
-- Description: Get a list of all hltddbs
+- Description: Get a list of all recipes
 - Response:
   ```json
   [
@@ -179,10 +179,10 @@ The base URL for all API endpoints is: `http://localhost:5000`
       "text": "The Room was terrible but the staff was very friendly."
     }
   ]
-#### Upload Hltddbs File in csv format
-- Endpoint: `/api/hltddbs/file`
+#### Upload recipes File in csv format
+- Endpoint: `/api/recipes/file`
 - Method: `POST`
-- Description: Upload hltddbs file in csv format
+- Description: Upload recipes file in csv format
 - Request Body:
   - CSV File
 
@@ -201,10 +201,10 @@ The base URL for all API endpoints is: `http://localhost:5000`
   {
     "total": 5
   }
-#### Upload Hltddbs File in csv format
-- Endpoint: `/api/hltddbs/file`
+#### Upload recipes File in csv format
+- Endpoint: `/api/recipes/file`
 - Method: `GET`
-- Description: Download hltddbs file in csv format
+- Description: Download recipes file in csv format
 - Response
 
   | pid                                  | text                                                                         | tags                                                                                                  |
