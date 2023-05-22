@@ -16,6 +16,5 @@ def get_all_tags():
 
 @api.route('/', methods=['POST'])
 def insert_tag():
-    aspect_pid = request.form['aspect']
-    sentiment_pid = request.form['sentiment']
-    return jsonify(TagModel.insert_tag(aspect_pid, sentiment_pid).raw)
+    tag_name = request.form['name']
+    return jsonify(TagModel.insert_tag(name=tag_name).raw)
